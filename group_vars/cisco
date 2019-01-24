@@ -1,0 +1,4 @@
+---
+ioscmds:
+  - show run
+  - show cdp neighbor

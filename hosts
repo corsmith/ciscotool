@@ -1,0 +1,14 @@
+[ciscossh]
+# add the hosts you want to ssh into
+
+[ciscotelnet]
+# add the hosts you want to telnet into
+
+[cisco:children]
+ciscossh
+ciscotelnet
+
+[cisco:vars]
+# this is the username and password that will used
+ansible_user=username
+ansible_ssh_pass=password

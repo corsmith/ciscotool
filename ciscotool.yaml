@@ -1,0 +1,49 @@
+---
+- hosts: 127.0.0.1
+  connection: local
+  tasks:
+  - name: make backup directory
+    file:
+      path: backups/
+      state: directory
+
+- hosts: ciscossh
+  gather_facts: false
+  connection: local
+
+  tasks:
+  - name: "run commands"
+    ios_command:
+      commands: "{{ item }}"
+    with_flattened: "{{ ioscmds }}"
+    register: config
+
+  - name: save output to backups/
+    copy:
+      content: "{{ item.stdout[0] }}"
+      dest: "backups/ssh-{{ inventory_hostname }}_{{ item.item }}.txt"
+    loop: "{{ config.results }}"
+
+- hosts: ciscotelnet
+  gather_facts: false
+  connection: local
+
+  tasks:
+  - name: "run commands"
+    telnet:
+      user: "{{ ansible_user }}"
+      password: "{{ ansible_ssh_pass }}"
+      login_prompt: "Username: "
+      prompts:
+        - "[>|#]"
+      command:
+        - terminal length 0
+        - "{{ item }}"
+    with_flattened: "{{ ioscmds }}"
+    register: telnetconfig
+
+  - name: save output to backups/
+    copy:
+      content: "{{ item.output[1] }}"
+      dest: "backups/telnet-{{ inventory_hostname }}_{{ item.item }}.txt"
+    loop: "{{ telnetconfig.results }}"
