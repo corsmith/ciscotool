@@ -4,7 +4,7 @@
 
 ### Install Windows Subsystem for Linux and Ubuntu
 
-https://docs.microsoft.com/en-us/windows/wsl/install-win10
+[Microsoft Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10)
 
 ### Run Bash on Windows Terminal and install ansible and git
 
